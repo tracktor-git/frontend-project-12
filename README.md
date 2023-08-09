@@ -1,10 +1,11 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/tracktor-git/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/tracktor-git/frontend-project-12/actions)
+[![Maintainability](https://api.codeclimate.com/v1/badges/dfdb4278d40e1476e649/maintainability)](https://codeclimate.com/github/tracktor-git/frontend-project-12/maintainability)
 
-[Hexlet Chat](https://frontend-project-12-production-10a9.up.railway.app) – очень упрощённый аналог мессенджера Slak.
+[Hexlet Chat](https://localhost:3000) – очень упрощённый аналог мессенджера Slack. (Ссылка временно недоступна)
 
 ### Демонстрация проекта
-Перейдите по [ссылке](https://localhost:3000)
+Перейдите по [ссылке](https://localhost:3000) (Ссылка временно недоступна)
 
 Общение разделено на каналы. Каждый канал — это отдельный чат, где пользователи могут общаться друг с другом. Слева находится список доступных каналов, к которым можно присоединиться. Также, можно создать свой канал. По умолчанию вы автоматически добавлены в канал #general. Это общий канал для общения всех пользователей.
 
@@ -21,14 +22,35 @@ git clone https://github.com/tracktor-git/frontend-project-12
 
 2. Установите приложение, используя следующие команды:
 
-Установка всех необходимых зависимостей:
+Находясь в корневой папке проекта, установите необходимые зависимости:
 
 ```sh
-npm ci
+make install
 ```
 
-Запуск приложения локально:
+Для установки зависимостей frontend-части приложения, перейдите в папку frontend:
 
 ```sh
+cd ./frontend
+```
+
+Затем выполните установку зависимостей фронтенда:
+
+```sh
+make install
+```
+
+Запуск приложения локально.
+
+Сначала запустите иртуальный сервер бэкенда (находясь в корневой папке проекта):
+
+```sh
+npm start
+```
+
+Затем перейдите в папку frontend и запустите frontend-часть приложения:
+
+```sh
+cd ./frontend
 npm start
 ```
