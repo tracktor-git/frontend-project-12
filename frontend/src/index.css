@@ -1,0 +1,40 @@
+.channel:hover {
+	background-color: #46464633;
+}
+
+.channel {
+	margin-bottom: 2px;
+	transition: background-color .2s ease-in-out;
+}
+
+.channel button {
+	border: none;
+}
+
+.channel button:active {
+	box-shadow: inset 0px 0px 4px #46464666;
+}
+
+.add-channel:active:focus {
+	border: none;
+	outline: none;
+}
+
+.add-channel:focus {
+	border: 3px solid #cccccccc;
+}
+
+.add-channel:active svg {
+	color: rgb(54, 109, 99) !important;
+}
+
+.dropdown-item:active {
+	background-color: #a7afb7;
+}
+
+.tracktor-spinner {
+	height: 40px;
+	width: 40px;
+	border: 5px solid;
+	border-right-color: transparent;
+}
