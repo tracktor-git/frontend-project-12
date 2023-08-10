@@ -35,7 +35,7 @@ const Channel = ({ data }) => {
         </Button>
         {data.removable && (
           <Dropdown.Toggle variant={variant} className="flex-grow-0 dropdown-toggle-split">
-            <span className="visually-hidden">Toggle</span>
+            <span className="visually-hidden">{translate('channels.channelControl')}</span>
             <Dropdown.Menu>
               <Dropdown.Item onClick={handleRemoveChannel}>{translate('channels.removeChannel')}</Dropdown.Item>
               <Dropdown.Item onClick={handleRnameChannel}>{translate('channels.renameChannel')}</Dropdown.Item>

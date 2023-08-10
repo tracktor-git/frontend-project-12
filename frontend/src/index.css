@@ -15,9 +15,9 @@
 	box-shadow: inset 0px 0px 4px #46464666;
 }
 
-.add-channel:active:focus {
-	border: none;
-	outline: none;
+ .add-channel:active:focus {
+	border-color: transparent;
+	outline-color: none;
 }
 
 .add-channel:focus {

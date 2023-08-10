@@ -45,6 +45,7 @@ export default {
       channelAdded: 'Канал создан',
       channelRenamed: 'Канал переименован',
       channelRemoved: 'Канал удалён',
+      channelControl: 'Управление каналом',
     },
     modals: {
       addChannelTitle: 'Добавить канал',
