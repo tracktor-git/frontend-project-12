@@ -29,7 +29,7 @@ const Channels = () => {
             onClick={handleOpenModal}
           >
             <FaRegSquarePlus size={20} color="rgb(85 133 124)" />
-            <span className="visually-hidden">{translate('channels.addChannel')}</span>
+            <span className="visually-hidden">+</span>
           </Button>
         </div>
         <Nav className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block" as="ul">
