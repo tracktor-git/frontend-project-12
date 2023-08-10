@@ -13,10 +13,7 @@ import useFilter from '../../../Hooks/useFilter';
 import socket from '../../../socket.js';
 
 const scrollToBottom = (element) => {
-  const { scrollHeight } = element;
-  const height = element.clientHeight;
-  const maxScrollTop = scrollHeight - height;
-  element.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+  element.scrollTo(0, element.scrollHeight);
 };
 
 const Messages = () => {
