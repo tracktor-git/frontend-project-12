@@ -71,7 +71,7 @@ const AddChannel = () => {
         <Form.Group className="input-group" />
         <Modal.Body>
           <Form.Group className="input-group">
-            <FloatingLabel label={translate('modals.channelName')}>
+            <FloatingLabel label={translate('modals.channelName')} controlId="channelName">
               <Form.Control
                 ref={inputRef}
                 type="text"

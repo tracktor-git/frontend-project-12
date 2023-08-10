@@ -84,7 +84,7 @@ const RenameChannel = () => {
       <Form name="form" onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className="input-group">
-            <FloatingLabel label={translate('modals.channelName')}>
+            <FloatingLabel label={translate('modals.channelName')} controlId="channelName">
               <Form.Control
                 ref={inputRef}
                 type="text"
