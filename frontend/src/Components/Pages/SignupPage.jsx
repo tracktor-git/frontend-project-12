@@ -98,7 +98,7 @@ const SignupPage = () => {
                 <h1 className="text-center mb-4">{translate('register')}</h1>
                 <fieldset disabled={formik.isSubmitting}>
                   <Form.Group className="form-floating mb-3">
-                    <FloatingLabel label={translate('nickname')}>
+                    <FloatingLabel label={translate('username')}>
                       <Form.Control
                         className={getClassName('username')}
                         type="text"
@@ -106,7 +106,7 @@ const SignupPage = () => {
                         value={formik.values.username}
                         onBlur={formik.handleBlur}
                         disabled={formik.isSubmitting}
-                        placeholder={translate('nickname')}
+                        placeholder={translate('username')}
                         name="username"
                         id="username"
                         required

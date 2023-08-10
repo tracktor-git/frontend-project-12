@@ -5,6 +5,7 @@ export default {
     logout: 'Выйти',
     chatTitle: 'Hexlet Chat',
     nickname: 'Ваш ник',
+    username: 'Имя пользователя',
     password: 'Пароль',
     passwordConfirm: 'Подтвердите пароль',
     loginButton: 'Войти',
