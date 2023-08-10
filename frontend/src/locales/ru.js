@@ -29,6 +29,7 @@ export default {
       wrongAuthData: 'Неверные имя пользователя или пароль',
     },
     messages: {
+      newMessage: 'Новое сообщение',
       enterMessage: 'Введите сообщение...',
       sendMessage: 'Отправить сообщение',
       count_one: 'сообщение',

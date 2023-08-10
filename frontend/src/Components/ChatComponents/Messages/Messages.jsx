@@ -88,7 +88,7 @@ const Messages = () => {
                 ref={messageInputRef}
                 id="body"
                 name="body"
-                aria-label={translate('messages.enterMessage')}
+                aria-label={translate('messages.newMessage')}
                 placeholder={translate('messages.enterMessage')}
                 className="border-0 p-0 ps-2"
                 autoComplete="off"
