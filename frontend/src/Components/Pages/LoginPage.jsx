@@ -58,7 +58,7 @@ const LoginPage = () => {
                 <h1 className="text-center mb-4">{translate('login')}</h1>
                 <fieldset disabled={formik.isSubmitting}>
                   <Form.Group className="form-floating mb-3">
-                    <FloatingLabel label={translate('nickname')}>
+                    <FloatingLabel label={translate('nickname')} controlId="username">
                       <Form.Control
                         className={errorText && 'is-invalid'}
                         type="text"
@@ -75,7 +75,7 @@ const LoginPage = () => {
                     </FloatingLabel>
                   </Form.Group>
                   <Form.Group className="form-floating mb-3">
-                    <FloatingLabel label={translate('password')}>
+                    <FloatingLabel label={translate('password')} controlId="password">
                       <Form.Control
                         className={errorText && 'is-invalid'}
                         type="password"

@@ -98,7 +98,7 @@ const SignupPage = () => {
                 <h1 className="text-center mb-4">{translate('register')}</h1>
                 <fieldset disabled={formik.isSubmitting}>
                   <Form.Group className="form-floating mb-3">
-                    <FloatingLabel label={translate('username')}>
+                    <FloatingLabel label={translate('username')} controlId="username">
                       <Form.Control
                         className={getClassName('username')}
                         type="text"
@@ -106,9 +106,10 @@ const SignupPage = () => {
                         value={formik.values.username}
                         onBlur={formik.handleBlur}
                         disabled={formik.isSubmitting}
-                        placeholder={translate('username')}
+                        placeholder={translate('errors.shouldHaveLength')}
                         name="username"
                         id="username"
+                        autoComplete="username"
                         required
                         autoFocus
                       />
@@ -116,15 +117,15 @@ const SignupPage = () => {
                     </FloatingLabel>
                   </Form.Group>
                   <Form.Group className="form-floating mb-3">
-                    <FloatingLabel label={translate('password')}>
+                    <FloatingLabel label={translate('password')} controlId="password">
                       <Form.Control
                         className={getClassName('password')}
-                        type="password"
                         onChange={formik.handleChange}
                         value={formik.values.password}
                         onBlur={formik.handleBlur}
                         disabled={formik.isSubmitting}
-                        placeholder={translate('password')}
+                        placeholder={translate('errors.shouldHaveMinLength')}
+                        type="password"
                         name="password"
                         id="password"
                         required
@@ -133,15 +134,15 @@ const SignupPage = () => {
                     </FloatingLabel>
                   </Form.Group>
                   <Form.Group className="form-floating mb-3">
-                    <FloatingLabel label={translate('passwordConfirm')}>
+                    <FloatingLabel label={translate('passwordConfirm')} controlId="passwordConfirm">
                       <Form.Control
                         className={getClassName('passwordConfirm')}
-                        type="password"
                         onChange={formik.handleChange}
                         value={formik.values.passwordConfirm}
                         onBlur={formik.handleBlur}
                         disabled={formik.isSubmitting}
-                        placeholder={translate('passwordConfirm')}
+                        placeholder={translate('errors.passwordsShouldBeEqual')}
+                        type="password"
                         name="passwordConfirm"
                         id="passwordConfirm"
                         required
