@@ -2,10 +2,10 @@
 [![Actions Status](https://github.com/tracktor-git/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/tracktor-git/frontend-project-12/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dfdb4278d40e1476e649/maintainability)](https://codeclimate.com/github/tracktor-git/frontend-project-12/maintainability)
 
-[Hexlet Chat](https://localhost:3000) – очень упрощённый аналог мессенджера Slack. (Ссылка временно недоступна)
+[Hexlet Chat](https://frontend-project-12-production-23dd.up.railway.app/) – очень упрощённый аналог мессенджера Slack.
 
 ### Демонстрация проекта
-Перейдите по [ссылке](https://localhost:3000) (Ссылка временно недоступна)
+Перейдите по [ссылке](https://frontend-project-12-production-23dd.up.railway.app/)
 
 Общение разделено на каналы. Каждый канал — это отдельный чат, где пользователи могут общаться друг с другом. Слева находится список доступных каналов, к которым можно присоединиться. Также, можно создать свой канал. По умолчанию вы автоматически добавлены в канал #general. Это общий канал для общения всех пользователей.
 
