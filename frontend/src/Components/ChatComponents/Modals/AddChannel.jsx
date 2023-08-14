@@ -77,12 +77,11 @@ const AddChannel = () => {
         <Form.Group className="input-group" />
         <Modal.Body>
           <Form.Group className="input-group">
-            <FloatingLabel label={translate('modals.channelName')}>
+            <FloatingLabel label={translate('modals.channelName')} controlId="channelName">
               <Form.Control
                 ref={inputRef}
                 type="text"
                 name="channelName"
-                id="channelName"
                 placeholder={translate('modals.channelName')}
                 className={formik.errors.channelName && 'is-invalid'}
                 disabled={formik.isSubmitting}
