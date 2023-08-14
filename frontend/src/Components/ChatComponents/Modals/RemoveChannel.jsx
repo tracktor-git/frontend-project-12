@@ -5,13 +5,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
+import { useContext } from 'react';
 import { closeModal } from '../../../redux/slices/modalSlice';
-import socket from '../../../socket';
+import SocketContext from '../../../Contexts/SocketContext.js';
 import selectors from '../../../redux/selectors';
 
 const RemoveChannel = () => {
   const dispatch = useDispatch();
   const translate = useTranslation().t;
+  const socketApi = useContext(SocketContext);
 
   const channelId = useSelector(selectors.modalChannelIdSelector);
   const isOpened = useSelector(selectors.modalIsOpenedSelector);
@@ -22,16 +24,15 @@ const RemoveChannel = () => {
 
   const formik = useFormik({
     initialValues: {},
-    onSubmit: () => {
-      socket.emit('removeChannel', { id: channelId }, (payload) => {
-        if (payload.error) {
-          console.error(payload.error);
-          toast(translate('errors.dataLoadingError'));
-        } else {
-          toast(translate('channels.channelRemoved'));
-          handleModalHide();
-        }
-      });
+    onSubmit: async () => {
+      try {
+        await socketApi.removeChannel(channelId);
+        toast(translate('channels.channelRemoved'));
+        handleModalHide();
+      } catch (error) {
+        console.warn(error);
+        toast.error(translate('errors.dataLoadingError'));
+      }
     },
   });
 

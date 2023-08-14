@@ -7,25 +7,25 @@ import Modal from 'react-bootstrap/Modal';
 import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { closeModal } from '../../../redux/slices/modalSlice';
+import SocketContext from '../../../Contexts/SocketContext.js';
 import useFilter from '../../../Hooks/useFilter';
-import socket from '../../../socket';
 import selectors from '../../../redux/selectors';
 
 const RenameChannel = () => {
   const dispatch = useDispatch();
   const translate = useTranslation().t;
   const filter = useFilter();
+  const socketApi = useContext(SocketContext);
+  const inputRef = useRef();
 
   const isOpened = useSelector(selectors.modalIsOpenedSelector);
   const channelId = useSelector(selectors.modalChannelIdSelector);
   const channelName = useSelector(selectors.channelNameSelector);
   const channelNames = useSelector(selectors.channelsNamesSelector);
-
-  const inputRef = useRef();
 
   useEffect(() => {
     inputRef.current.select();
@@ -38,7 +38,6 @@ const RenameChannel = () => {
       .min(3, translate('errors.shouldHaveLength'))
       .max(20, translate('errors.shouldHaveLength'))
       .notOneOf(channelNames, translate('errors.shouldBeUniq'))
-      .transform((value) => filter.clean(value))
       .required(translate('errors.required')),
   });
 
@@ -51,22 +50,21 @@ const RenameChannel = () => {
     validationSchema: ChannelNameSchema,
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const renamedChannel = {
         id: channelId,
-        name: filter.clean(values.channelName),
+        name: values.channelName,
       };
 
-      socket.emit('renameChannel', renamedChannel, (payload) => {
-        if (payload.error) {
-          console.error(payload.error);
-          toast(translate('errors.dataLoadingError'));
-        } else {
-          toast(translate('channels.channelRenamed'));
-          handleModalHide();
-          formik.resetForm();
-        }
-      });
+      try {
+        await socketApi.renameChannel(renamedChannel);
+        toast(translate('channels.channelRenamed'));
+        handleModalHide();
+        formik.resetForm();
+      } catch (error) {
+        console.warn(error);
+        toast.error(translate('errors.dataLoadingError'));
+      }
     },
   });
 
@@ -84,7 +82,7 @@ const RenameChannel = () => {
       <Form name="form" onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className="input-group">
-            <FloatingLabel label={translate('modals.channelName')} controlId="channelName">
+            <FloatingLabel label={translate('modals.channelName')}>
               <Form.Control
                 ref={inputRef}
                 type="text"

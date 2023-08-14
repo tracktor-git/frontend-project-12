@@ -15,10 +15,11 @@ const ChatPage = () => {
   const translate = useTranslation().t;
 
   const status = useSelector(selectors.statusSelector);
-  const { user, logOut } = useAuth();
+  const { logOut, getAuthHeader } = useAuth();
 
   useEffect(() => {
-    dispatch(fetchData(user))
+    const authHeader = getAuthHeader();
+    dispatch(fetchData(authHeader))
       .unwrap()
       .catch((error) => {
         if (error.response?.statusText === 'Unauthorized') {
@@ -28,7 +29,7 @@ const ChatPage = () => {
           toast.error(translate('errors.dataLoadingError'));
         }
       });
-  }, [dispatch, user, logOut, translate]);
+  }, [dispatch, getAuthHeader, logOut, translate]);
 
   if (status === 'loading') {
     return (

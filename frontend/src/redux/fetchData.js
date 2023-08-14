@@ -4,9 +4,9 @@ import routes from '../routes';
 
 const fetchData = createAsyncThunk(
   'data/fetchData',
-  async (user, { rejectWithValue }) => {
+  async (authHeader, { rejectWithValue }) => {
     try {
-      const response = await axios.get(routes.dataPath(), { headers: { Authorization: `Bearer ${user.token}` } });
+      const response = await axios.get(routes.dataPath(), { headers: authHeader });
       return response.data;
     } catch (error) {
       return rejectWithValue(error);

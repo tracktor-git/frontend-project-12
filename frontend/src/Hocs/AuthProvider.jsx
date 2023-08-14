@@ -8,16 +8,20 @@ const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(!!user);
 
   const logIn = () => setLoggedIn(true);
+
   const logOut = () => {
     localStorage.removeItem('user');
     setLoggedIn(false);
   };
+
+  const getAuthHeader = () => ({ Authorization: `Bearer ${user?.token}` });
 
   const value = {
     user,
     loggedIn,
     logIn,
     logOut,
+    getAuthHeader,
   };
 
   return (

@@ -2,7 +2,7 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { Provider as ReduxProvider } from 'react-redux';
 import i18next from 'i18next';
-import AuthProvider from './Hocs/AuthProvider';
+import SocketProvider from './Hocs/SocketProvider';
 import App from './App';
 import resources from './locales';
 import rollbarConfig from './rollbar';
@@ -22,11 +22,11 @@ const Init = async () => {
     <RollbarProvider config={rollbarConfig}>
       <ErrorBoundary>
         <I18nextProvider>
-          <AuthProvider>
-            <ReduxProvider store={store}>
+          <ReduxProvider store={store}>
+            <SocketProvider>
               <App />
-            </ReduxProvider>
-          </AuthProvider>
+            </SocketProvider>
+          </ReduxProvider>
         </I18nextProvider>
       </ErrorBoundary>
     </RollbarProvider>

@@ -1,16 +1,16 @@
 import { Form, Button } from 'react-bootstrap';
 import { IoSendSharp } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useContext } from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import SocketContext from '../../../Contexts/SocketContext.js';
 import Message from './Message.jsx';
 import selectors from '../../../redux/selectors.js';
 import useAuth from '../../../Hooks/useAuth';
 import useFilter from '../../../Hooks/useFilter';
-import socket from '../../../socket.js';
 
 const scrollToBottom = (element) => {
   element.scrollTo(0, element.scrollHeight);
@@ -21,10 +21,12 @@ const Messages = () => {
   const messageInputRef = useRef();
   const translate = useTranslation().t;
   const filter = useFilter();
+  const socketApi = useContext(SocketContext);
 
   const currentChannelId = useSelector(selectors.currentChannelIdSelector);
   const currentChannelName = useSelector(selectors.currentChannelNameSelector);
   const messages = useSelector(selectors.messagesSelector);
+
   const { username } = useAuth().user;
 
   useEffect(() => {
@@ -42,21 +44,20 @@ const Messages = () => {
   const formik = useFormik({
     initialValues: { body: '' },
     validationSchema: MessageSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const newMessage = {
         body: filter.clean(values.body),
         channelId: currentChannelId,
         username,
       };
 
-      socket.emit('newMessage', newMessage, (payload) => {
-        if (payload.error) {
-          console.error(payload.error);
-          toast(translate('errors.dataLoadingError'));
-        } else {
-          formik.resetForm();
-        }
-      });
+      try {
+        await socketApi.sendMessage(newMessage);
+        formik.resetForm();
+      } catch (error) {
+        toast.error(translate('errors.dataLoadingError'));
+        console.warn(error);
+      }
     },
   });
 
