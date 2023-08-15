@@ -39,7 +39,7 @@ const RemoveChannel = () => {
   return (
     <Modal show={isOpened} onHide={handleModalHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{translate('modals.removeChannelTitle')}</Modal.Title>
+        <Modal.Title>{translate('channels.removeChannelTitle')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>{translate('modals.areYouSure')}</Modal.Body>
       <Form name="form" onSubmit={formik.handleSubmit}>

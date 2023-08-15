@@ -71,18 +71,18 @@ const AddChannel = () => {
   return (
     <Modal show={isOpened} onHide={handleModalHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{translate('modals.addChannelTitle')}</Modal.Title>
+        <Modal.Title>{translate('channels.addChannel')}</Modal.Title>
       </Modal.Header>
       <Form name="form" onSubmit={handleSubmit}>
         <Form.Group className="input-group" />
         <Modal.Body>
           <Form.Group className="input-group">
-            <FloatingLabel label={translate('modals.channelName')} controlId="channelName">
+            <FloatingLabel label={translate('channels.channelName')} controlId="channelName">
               <Form.Control
                 ref={inputRef}
                 type="text"
                 name="channelName"
-                placeholder={translate('modals.channelName')}
+                placeholder={translate('channels.channelName')}
                 className={formik.errors.channelName && 'is-invalid'}
                 disabled={formik.isSubmitting}
                 onChange={formik.handleChange}
