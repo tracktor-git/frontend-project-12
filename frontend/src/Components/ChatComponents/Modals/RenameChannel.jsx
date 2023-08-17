@@ -1,35 +1,26 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
 import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { useRef, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { closeModal } from '../../../redux/slices/modalSlice';
 import SocketContext from '../../../Contexts/SocketContext.js';
 import useFilter from '../../../Hooks/useFilter';
 import selectors from '../../../redux/selectors';
+import ModalForm from './ModalForm';
 
 const RenameChannel = () => {
   const dispatch = useDispatch();
   const translate = useTranslation().t;
   const filter = useFilter();
   const socketApi = useContext(SocketContext);
-  const inputRef = useRef();
 
   const isOpened = useSelector(selectors.modalIsOpenedSelector);
   const channelId = useSelector(selectors.modalChannelIdSelector);
   const channelName = useSelector(selectors.channelNameSelector);
   const channelNames = useSelector(selectors.channelsNamesSelector);
-
-  useEffect(() => {
-    inputRef.current.select();
-  }, [inputRef.current]);
 
   const ChannelNameSchema = Yup.object().shape({
     channelName: Yup
@@ -79,35 +70,7 @@ const RenameChannel = () => {
       <Modal.Header closeButton>
         <Modal.Title>{translate('channels.renameChannelTitle')}</Modal.Title>
       </Modal.Header>
-      <Form name="form" onSubmit={handleSubmit}>
-        <Modal.Body>
-          <Form.Group className="input-group">
-            <FloatingLabel label={translate('channels.channelName')} controlId="channelName">
-              <Form.Control
-                ref={inputRef}
-                type="text"
-                name="channelName"
-                placeholder={translate('channels.channelName')}
-                className={formik.errors.channelName && 'is-invalid'}
-                disabled={formik.isSubmitting}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.channelName}
-                autoFocus
-              />
-              {formik.errors.channelName && <div className="invalid-tooltip">{formik.errors.channelName}</div>}
-            </FloatingLabel>
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleModalHide} disabled={formik.isSubmitting}>
-            {translate('modals.cancelButton')}
-          </Button>
-          <Button name="form" type="submit" variant="success" disabled={formik.isSubmitting}>
-            {translate('modals.sendButton')}
-          </Button>
-        </Modal.Footer>
-      </Form>
+      <ModalForm onSubmit={handleSubmit} formik={formik} />
     </Modal>
   );
 };
