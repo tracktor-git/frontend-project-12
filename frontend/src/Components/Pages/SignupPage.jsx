@@ -5,7 +5,6 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel';
 import Row from 'react-bootstrap/Row';
-import { useState } from 'react';
 import { useFormik } from 'formik';
 import { Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +18,6 @@ import signupImage from '../../Images/signup.svg';
 
 const SignupPage = () => {
   const { logIn, loggedIn } = useAuth();
-  const [errorText, setErrorText] = useState(null);
   const translate = useTranslation().t;
 
   const SignupSchema = Yup.object().shape({
@@ -42,7 +40,6 @@ const SignupPage = () => {
     initialValues: { username: '', password: '', passwordConfirm: '' },
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
-      setErrorText(null);
       const { username, password } = values;
       try {
         const response = await axios.post(routes.signupPath(), { username, password });
@@ -53,9 +50,11 @@ const SignupPage = () => {
           toast.error(translate('errors.networkError'));
           console.error(error.message);
         } else if (error.response.data.message === 'Conflict') {
-          setErrorText(translate('errors.userConflict'));
+          formik.errors.passwordConfirm = translate('errors.userConflict');
+          formik.errors.password = ' ';
+          formik.errors.username = ' ';
         } else {
-          setErrorText(error.message);
+          formik.errors.passwordConfirm = error.message;
         }
       }
     },
@@ -64,26 +63,6 @@ const SignupPage = () => {
   if (loggedIn) {
     return <Navigate to={routes.chatPagePath()} />;
   }
-
-  const showError = (field) => {
-    if (formik.touched[field] && formik.errors[field]) {
-      return <div className="invalid-tooltip">{formik.errors[field]}</div>;
-    }
-    if (errorText) {
-      return <div className="invalid-tooltip">{errorText}</div>;
-    }
-    return false;
-  };
-
-  const getClassName = (field) => {
-    if (errorText) {
-      return 'is-invalid';
-    }
-    if (formik.touched[field] && formik.errors[field]) {
-      return 'is-invalid';
-    }
-    return null;
-  };
 
   return (
     <Container className="h-100" fluid>
@@ -100,7 +79,7 @@ const SignupPage = () => {
                   <Form.Group className="form-floating mb-3">
                     <FloatingLabel label={translate('username')} controlId="username">
                       <Form.Control
-                        className={getClassName('username')}
+                        className={formik.touched.username && formik.errors.username && 'is-invalid'}
                         type="text"
                         onChange={formik.handleChange}
                         value={formik.values.username}
@@ -108,18 +87,17 @@ const SignupPage = () => {
                         disabled={formik.isSubmitting}
                         placeholder={translate('errors.shouldHaveLength')}
                         name="username"
-                        id="username"
                         autoComplete="username"
                         required
                         autoFocus
                       />
-                      {showError('username')}
+                      {formik.errors && <div className="invalid-tooltip">{formik.errors.username}</div>}
                     </FloatingLabel>
                   </Form.Group>
                   <Form.Group className="form-floating mb-3">
                     <FloatingLabel label={translate('password')} controlId="password">
                       <Form.Control
-                        className={getClassName('password')}
+                        className={formik.touched.password && formik.errors.password && 'is-invalid'}
                         onChange={formik.handleChange}
                         value={formik.values.password}
                         onBlur={formik.handleBlur}
@@ -127,16 +105,15 @@ const SignupPage = () => {
                         placeholder={translate('errors.shouldHaveMinLength')}
                         type="password"
                         name="password"
-                        id="password"
                         required
                       />
-                      {showError('password')}
+                      {formik.errors && <div className="invalid-tooltip">{formik.errors.password}</div>}
                     </FloatingLabel>
                   </Form.Group>
                   <Form.Group className="form-floating mb-3">
                     <FloatingLabel label={translate('passwordConfirm')} controlId="passwordConfirm">
                       <Form.Control
-                        className={getClassName('passwordConfirm')}
+                        className={formik.touched.passwordConfirm && formik.errors.passwordConfirm && 'is-invalid'}
                         onChange={formik.handleChange}
                         value={formik.values.passwordConfirm}
                         onBlur={formik.handleBlur}
@@ -144,10 +121,9 @@ const SignupPage = () => {
                         placeholder={translate('errors.passwordsShouldBeEqual')}
                         type="password"
                         name="passwordConfirm"
-                        id="passwordConfirm"
                         required
                       />
-                      {showError('passwordConfirm')}
+                      {formik.errors && <div className="invalid-tooltip">{formik.errors.passwordConfirm}</div>}
                     </FloatingLabel>
                   </Form.Group>
                   <Button type="submit" disabled={formik.isSubmitting} variant="outline-success" className="w-100 mb-3">

@@ -5,7 +5,6 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel';
 import Row from 'react-bootstrap/Row';
-import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +16,6 @@ import routes from '../../routes';
 import loginImage from '../../Images/login.svg';
 
 const LoginPage = () => {
-  const [errorText, setErrorText] = useState(null);
   const { logIn, loggedIn } = useAuth();
 
   const translate = useTranslation().t;
@@ -25,17 +23,18 @@ const LoginPage = () => {
   const formik = useFormik({
     initialValues: { username: '', password: '' },
     onSubmit: async (values) => {
-      setErrorText(null);
       try {
         const response = await axios.post(routes.loginPath(), values);
         localStorage.setItem('user', JSON.stringify(response.data));
         logIn();
+        formik.resetForm();
       } catch (error) {
         if (error.message === 'Network Error') {
           toast.error(translate('errors.networkError'));
         } else {
           console.error(error);
-          setErrorText(translate('errors.wrongAuthData'));
+          formik.errors.username = translate('errors.wrongAuthData');
+          formik.errors.password = translate('errors.wrongAuthData');
         }
       }
     },
@@ -60,7 +59,7 @@ const LoginPage = () => {
                   <Form.Group className="form-floating mb-3">
                     <FloatingLabel label={translate('nickname')} controlId="username">
                       <Form.Control
-                        className={errorText && 'is-invalid'}
+                        className={formik.errors.username && 'is-invalid'}
                         type="text"
                         onChange={formik.handleChange}
                         value={formik.values.username}
@@ -68,7 +67,6 @@ const LoginPage = () => {
                         disabled={formik.isSubmitting}
                         placeholder={translate('nickname')}
                         name="username"
-                        id="username"
                         required
                         autoFocus
                       />
@@ -77,7 +75,7 @@ const LoginPage = () => {
                   <Form.Group className="form-floating mb-3">
                     <FloatingLabel label={translate('password')} controlId="password">
                       <Form.Control
-                        className={errorText && 'is-invalid'}
+                        className={formik.errors.password && 'is-invalid'}
                         type="password"
                         onChange={formik.handleChange}
                         value={formik.values.password}
@@ -85,10 +83,9 @@ const LoginPage = () => {
                         disabled={formik.isSubmitting}
                         placeholder={translate('password')}
                         name="password"
-                        id="password"
                         required
                       />
-                      {errorText && <div className="invalid-tooltip">{errorText}</div>}
+                      {formik.errors && <div className="invalid-tooltip">{formik.errors.password}</div>}
                     </FloatingLabel>
                   </Form.Group>
                   <Button type="submit" disabled={formik.isSubmitting} variant="outline-primary" className="w-100 mb-3">
