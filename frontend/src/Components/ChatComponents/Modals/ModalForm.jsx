@@ -47,7 +47,7 @@ const ModalForm = ({ formik, onSubmit }) => {
         <Button variant="secondary" onClick={handleModalHide} disabled={formik.isSubmitting}>
           {translate('modals.cancelButton')}
         </Button>
-        <Button name="form" type="submit" variant="success" disabled={formik.isSubmitting}>
+        <Button variant="success" name="form" type="submit" disabled={formik.isSubmitting}>
           {translate('modals.sendButton')}
         </Button>
       </Modal.Footer>

@@ -3,7 +3,6 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/esm/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import { useFormik } from 'formik';
 import { Link, Navigate } from 'react-router-dom';
@@ -11,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import axios from 'axios';
+import FormInput from './FormInput';
 import useAuth from '../../Hooks/useAuth';
 import routes from '../../routes';
 
@@ -82,56 +82,28 @@ const SignupPage = () => {
               <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
                 <h1 className="text-center mb-4">{translate('register')}</h1>
                 <fieldset disabled={formik.isSubmitting}>
-                  <Form.Group className="form-floating mb-3">
-                    <FloatingLabel label={translate('username')} controlId="username">
-                      <Form.Control
-                        type="text"
-                        name="username"
-                        autoComplete="username"
-                        isInvalid={formik.touched.username && formik.errors.username}
-                        onChange={formik.handleChange}
-                        value={formik.values.username}
-                        onBlur={formik.handleBlur}
-                        disabled={formik.isSubmitting}
-                        placeholder={translate('errors.shouldHaveLength')}
-                        required
-                        autoFocus
-                      />
-                      {formik.errors && <div className="invalid-tooltip">{formik.errors.username}</div>}
-                    </FloatingLabel>
-                  </Form.Group>
-                  <Form.Group className="form-floating mb-3">
-                    <FloatingLabel label={translate('password')} controlId="password">
-                      <Form.Control
-                        type="password"
-                        name="password"
-                        isInvalid={formik.touched.password && formik.errors.password}
-                        onChange={formik.handleChange}
-                        value={formik.values.password}
-                        onBlur={formik.handleBlur}
-                        disabled={formik.isSubmitting}
-                        placeholder={translate('errors.shouldHaveMinLength')}
-                        required
-                      />
-                      {formik.errors && <div className="invalid-tooltip">{formik.errors.password}</div>}
-                    </FloatingLabel>
-                  </Form.Group>
-                  <Form.Group className="form-floating mb-3">
-                    <FloatingLabel label={translate('passwordConfirm')} controlId="passwordConfirm">
-                      <Form.Control
-                        type="password"
-                        name="passwordConfirm"
-                        isInvalid={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
-                        onChange={formik.handleChange}
-                        value={formik.values.passwordConfirm}
-                        onBlur={formik.handleBlur}
-                        disabled={formik.isSubmitting}
-                        placeholder={translate('errors.passwordsShouldBeEqual')}
-                        required
-                      />
-                      {formik.errors && <div className="invalid-tooltip">{formik.errors.passwordConfirm}</div>}
-                    </FloatingLabel>
-                  </Form.Group>
+                  <FormInput
+                    type="text"
+                    field="username"
+                    formik={formik}
+                    label={translate('username')}
+                    placeholder={translate('errors.shouldHaveLength')}
+                    autoFocus
+                  />
+                  <FormInput
+                    type="password"
+                    field="password"
+                    formik={formik}
+                    label={translate('password')}
+                    placeholder={translate('errors.shouldHaveMinLength')}
+                  />
+                  <FormInput
+                    type="password"
+                    field="passwordConfirm"
+                    formik={formik}
+                    label={translate('passwordConfirm')}
+                    placeholder={translate('errors.passwordsShouldBeEqual')}
+                  />
                   <Button type="submit" disabled={formik.isSubmitting} variant="outline-success" className="w-100 mb-3">
                     {translate('getRegistered')}
                   </Button>
