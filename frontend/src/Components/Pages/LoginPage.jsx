@@ -17,7 +17,6 @@ import loginImage from '../../Images/login.svg';
 
 const LoginPage = () => {
   const { logIn, loggedIn } = useAuth();
-
   const translate = useTranslation().t;
 
   const formik = useFormik({
@@ -59,14 +58,14 @@ const LoginPage = () => {
                   <Form.Group className="form-floating mb-3">
                     <FloatingLabel label={translate('nickname')} controlId="username">
                       <Form.Control
-                        className={formik.errors.username && 'is-invalid'}
                         type="text"
+                        name="username"
+                        isInvalid={formik.errors.username}
                         onChange={formik.handleChange}
                         value={formik.values.username}
                         onBlur={formik.handleBlur}
                         disabled={formik.isSubmitting}
                         placeholder={translate('nickname')}
-                        name="username"
                         required
                         autoFocus
                       />
@@ -75,14 +74,14 @@ const LoginPage = () => {
                   <Form.Group className="form-floating mb-3">
                     <FloatingLabel label={translate('password')} controlId="password">
                       <Form.Control
-                        className={formik.errors.password && 'is-invalid'}
                         type="password"
+                        name="password"
+                        isInvalid={formik.errors.password}
                         onChange={formik.handleChange}
                         value={formik.values.password}
                         onBlur={formik.handleBlur}
                         disabled={formik.isSubmitting}
                         placeholder={translate('password')}
-                        name="password"
                         required
                       />
                       {formik.errors && <div className="invalid-tooltip">{formik.errors.password}</div>}

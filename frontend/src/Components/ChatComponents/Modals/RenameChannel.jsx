@@ -66,7 +66,7 @@ const RenameChannel = () => {
   };
 
   return (
-    <Modal show={isOpened} onHide={handleModalHide} centered>
+    <Modal show={isOpened} onHide={handleModalHide} centered animation>
       <Modal.Header closeButton>
         <Modal.Title>{translate('channels.renameChannelTitle')}</Modal.Title>
       </Modal.Header>

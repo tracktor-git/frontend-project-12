@@ -77,19 +77,19 @@ const Messages = () => {
         </div>
         <div className="mt-auto px-5 py-3">
           <Form
-            noValidate
             className="py-1 border rounded-2"
             onSubmit={formik.handleSubmit}
+            noValidate
           >
             <Form.Group className="input-group">
               <Form.Control
-                ref={messageInputRef}
                 id="body"
                 name="body"
-                aria-label={translate('messages.newMessage')}
-                placeholder={translate('messages.enterMessage')}
                 className="border-0 p-0 ps-2"
                 autoComplete="off"
+                ref={messageInputRef}
+                aria-label={translate('messages.newMessage')}
+                placeholder={translate('messages.enterMessage')}
                 onChange={formik.handleChange}
                 value={formik.values.body}
                 disabled={formik.isSubmitting}
@@ -97,9 +97,9 @@ const Messages = () => {
               />
               <span title={translate('messages.sendMessage')}>
                 <Button
-                  style={{ border: 'none' }}
-                  variant="group-vertical"
                   type="submit"
+                  variant="group-vertical"
+                  style={{ border: 'none' }}
                   disabled={formik.isSubmitting || !formik.values.body.trim()}
                   onClick={formik.handleSubmit}
                 >

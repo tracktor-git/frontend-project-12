@@ -61,7 +61,7 @@ const AddChannel = () => {
   };
 
   return (
-    <Modal show={isOpened} onHide={handleModalHide} centered>
+    <Modal show={isOpened} onHide={handleModalHide} centered animation>
       <Modal.Header closeButton>
         <Modal.Title>{translate('channels.addChannel')}</Modal.Title>
       </Modal.Header>

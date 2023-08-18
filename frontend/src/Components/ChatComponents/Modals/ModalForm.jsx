@@ -28,11 +28,11 @@ const ModalForm = ({ formik, onSubmit }) => {
         <Form.Group className="input-group">
           <FloatingLabel label={translate('channels.channelName')} controlId="channelName">
             <Form.Control
-              ref={inputRef}
               type="text"
               name="channelName"
+              ref={inputRef}
               placeholder={translate('channels.channelName')}
-              className={formik.errors.channelName && 'is-invalid'}
+              isInvalid={formik.errors.channelName}
               disabled={formik.isSubmitting}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}

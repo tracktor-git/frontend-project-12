@@ -36,6 +36,21 @@ const SignupPage = () => {
       .when('password', (password, field) => password && field.oneOf([Yup.ref('password')], translate('errors.passwordsShouldBeEqual'))),
   });
 
+  const handleError = (error, formikErrors) => {
+    console.error(error);
+    switch (error.code) {
+      case 'ERR_BAD_REQUEST':
+        formikErrors.username = translate('errors.userConflict');
+        break;
+      case 'ERR_NETWORK':
+        toast.error(translate('errors.networkError'));
+        break;
+      default:
+        toast.error(error.message);
+        break;
+    }
+  };
+
   const formik = useFormik({
     initialValues: { username: '', password: '', passwordConfirm: '' },
     validationSchema: SignupSchema,
@@ -46,16 +61,7 @@ const SignupPage = () => {
         localStorage.setItem('user', JSON.stringify({ username: response.data.username, token: response.data.token }));
         logIn();
       } catch (error) {
-        if (error.message === 'Network Error') {
-          toast.error(translate('errors.networkError'));
-          console.error(error.message);
-        } else if (error.response.data.message === 'Conflict') {
-          formik.errors.passwordConfirm = translate('errors.userConflict');
-          formik.errors.password = ' ';
-          formik.errors.username = ' ';
-        } else {
-          formik.errors.passwordConfirm = error.message;
-        }
+        handleError(error, formik.errors);
       }
     },
   });
@@ -79,15 +85,15 @@ const SignupPage = () => {
                   <Form.Group className="form-floating mb-3">
                     <FloatingLabel label={translate('username')} controlId="username">
                       <Form.Control
-                        className={formik.touched.username && formik.errors.username && 'is-invalid'}
                         type="text"
+                        name="username"
+                        autoComplete="username"
+                        isInvalid={formik.touched.username && formik.errors.username}
                         onChange={formik.handleChange}
                         value={formik.values.username}
                         onBlur={formik.handleBlur}
                         disabled={formik.isSubmitting}
                         placeholder={translate('errors.shouldHaveLength')}
-                        name="username"
-                        autoComplete="username"
                         required
                         autoFocus
                       />
@@ -97,14 +103,14 @@ const SignupPage = () => {
                   <Form.Group className="form-floating mb-3">
                     <FloatingLabel label={translate('password')} controlId="password">
                       <Form.Control
-                        className={formik.touched.password && formik.errors.password && 'is-invalid'}
+                        type="password"
+                        name="password"
+                        isInvalid={formik.touched.password && formik.errors.password}
                         onChange={formik.handleChange}
                         value={formik.values.password}
                         onBlur={formik.handleBlur}
                         disabled={formik.isSubmitting}
                         placeholder={translate('errors.shouldHaveMinLength')}
-                        type="password"
-                        name="password"
                         required
                       />
                       {formik.errors && <div className="invalid-tooltip">{formik.errors.password}</div>}
@@ -113,14 +119,14 @@ const SignupPage = () => {
                   <Form.Group className="form-floating mb-3">
                     <FloatingLabel label={translate('passwordConfirm')} controlId="passwordConfirm">
                       <Form.Control
-                        className={formik.touched.passwordConfirm && formik.errors.passwordConfirm && 'is-invalid'}
+                        type="password"
+                        name="passwordConfirm"
+                        isInvalid={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
                         onChange={formik.handleChange}
                         value={formik.values.passwordConfirm}
                         onBlur={formik.handleBlur}
                         disabled={formik.isSubmitting}
                         placeholder={translate('errors.passwordsShouldBeEqual')}
-                        type="password"
-                        name="passwordConfirm"
                         required
                       />
                       {formik.errors && <div className="invalid-tooltip">{formik.errors.passwordConfirm}</div>}

@@ -12,6 +12,7 @@ const Channel = ({ data }) => {
   const translate = useTranslation().t;
 
   const currentChannelId = useSelector(selectors.currentChannelIdSelector);
+  const variant = data.id === currentChannelId ? 'secondary' : 'text-start';
 
   const handleChannelClick = () => {
     dispatch(setActiveChannel(data.id));
@@ -21,14 +22,12 @@ const Channel = ({ data }) => {
     dispatch(openModal({ type: 'removeChannel', data: { channelId: data.id } }));
   };
 
-  const handleRnameChannel = () => {
+  const handleRenameChannel = () => {
     dispatch(openModal({ type: 'renameChannel', data: { channelId: data.id } }));
   };
 
-  const variant = data.id === currentChannelId ? 'secondary' : 'text-start';
-
   return (
-    <Nav.Item className="channel w-100" as="li">
+    <Nav.Item className="channel w-100">
       <Dropdown className="d-flex btn-group">
         <Button variant={variant} className="w-100 rounded-0 text-start btn text-truncate" onClick={handleChannelClick}>
           <span className="me-1">{`# ${data.name}`}</span>
@@ -38,7 +37,7 @@ const Channel = ({ data }) => {
             <span className="visually-hidden">{translate('channels.channelControl')}</span>
             <Dropdown.Menu>
               <Dropdown.Item onClick={handleRemoveChannel}>{translate('channels.removeChannelButton')}</Dropdown.Item>
-              <Dropdown.Item onClick={handleRnameChannel}>{translate('channels.renameChannelButton')}</Dropdown.Item>
+              <Dropdown.Item onClick={handleRenameChannel}>{translate('channels.renameChannelButton')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown.Toggle>
         )}

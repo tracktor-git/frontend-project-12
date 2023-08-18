@@ -32,7 +32,7 @@ const Channels = () => {
             <span className="visually-hidden">+</span>
           </Button>
         </div>
-        <Nav className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block" as="ul">
+        <Nav className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
           {
             channels.map((channel) => <Channel key={channel.id} data={channel} />)
           }
