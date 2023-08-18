@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -37,21 +36,6 @@ const SignupPage = () => {
       .when('password', (password, field) => password && field.oneOf([Yup.ref('password')], translate('errors.passwordsShouldBeEqual'))),
   });
 
-  const handleError = (error, formikErrors) => {
-    console.error(error);
-    switch (error.code) {
-      case 'ERR_BAD_REQUEST':
-        formikErrors.username = translate('errors.userConflict');
-        break;
-      case 'ERR_NETWORK':
-        toast.error(translate('errors.networkError'));
-        break;
-      default:
-        toast.error(error.message);
-        break;
-    }
-  };
-
   const formik = useFormik({
     initialValues: { username: '', password: '', passwordConfirm: '' },
     validationSchema: SignupSchema,
@@ -62,7 +46,18 @@ const SignupPage = () => {
         localStorage.setItem('user', JSON.stringify({ username: response.data.username, token: response.data.token }));
         logIn();
       } catch (error) {
-        handleError(error, formik.errors);
+        console.error(error);
+        switch (error.code) {
+          case 'ERR_BAD_REQUEST':
+            formik.errors.username = translate('errors.userConflict');
+            break;
+          case 'ERR_NETWORK':
+            toast.error(translate('errors.networkError'));
+            break;
+          default:
+            toast.error(error.message);
+            break;
+        }
       }
     },
   });

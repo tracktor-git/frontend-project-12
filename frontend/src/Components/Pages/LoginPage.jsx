@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -18,16 +19,19 @@ import loginImage from '../../Images/login.svg';
 const LoginPage = () => {
   const { logIn, loggedIn } = useAuth();
   const translate = useTranslation().t;
+  const [authFailed, setAuthFailed] = useState(false);
 
   const formik = useFormik({
     initialValues: { username: '', password: '' },
     onSubmit: async (values) => {
+      setAuthFailed(false);
       try {
         const response = await axios.post(routes.loginPath(), values);
         localStorage.setItem('user', JSON.stringify(response.data));
         logIn();
         formik.resetForm();
       } catch (error) {
+        setAuthFailed(true);
         if (error.message === 'Network Error') {
           toast.error(translate('errors.networkError'));
         } else {
@@ -60,6 +64,7 @@ const LoginPage = () => {
                     formik={formik}
                     label={translate('nickname')}
                     placeholder={translate('nickname')}
+                    isInvalid={authFailed}
                     autoFocus
                   />
                   <FormInput
@@ -68,6 +73,7 @@ const LoginPage = () => {
                     formik={formik}
                     label={translate('password')}
                     placeholder={translate('password')}
+                    isInvalid={authFailed}
                   />
                   <Button type="submit" disabled={formik.isSubmitting} variant="outline-primary" className="w-100 mb-3">
                     {translate('loginButton')}

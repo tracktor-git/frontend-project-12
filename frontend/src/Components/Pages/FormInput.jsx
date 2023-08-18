@@ -3,7 +3,7 @@ import FloatingLabel from 'react-bootstrap/esm/FloatingLabel';
 
 const FormInput = (props) => {
   const {
-    formik, field, type, label, placeholder, autoFocus,
+    formik, field, type, label, placeholder, autoFocus, isInvalid,
   } = props;
 
   return (
@@ -13,7 +13,7 @@ const FormInput = (props) => {
           type={type}
           name={field}
           autoComplete={field}
-          isInvalid={formik.touched[field] && formik.errors[field]}
+          isInvalid={isInvalid || (formik.touched[field] && formik.errors[field])}
           onChange={formik.handleChange}
           value={formik.values[field]}
           onBlur={formik.handleBlur}
