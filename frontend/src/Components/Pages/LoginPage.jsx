@@ -32,7 +32,6 @@ const LoginPage = () => {
           toast.error(translate('errors.networkError'));
         } else {
           console.error(error);
-          formik.errors.username = translate('errors.wrongAuthData');
           formik.errors.password = translate('errors.wrongAuthData');
         }
       }

@@ -22,7 +22,7 @@ const FormInput = (props) => {
           autoFocus={autoFocus}
           required
         />
-        {formik.errors && <div className="invalid-tooltip">{formik.errors[field]}</div>}
+        {formik.errors[field] && <div className="invalid-tooltip">{formik.errors[field]}</div>}
       </FloatingLabel>
     </Form.Group>
   );
