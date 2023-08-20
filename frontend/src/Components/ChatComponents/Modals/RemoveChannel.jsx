@@ -11,8 +11,8 @@ import SocketContext from '../../../Contexts/SocketContext.js';
 import selectors from '../../../redux/selectors';
 
 const RemoveChannel = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const translate = useTranslation().t;
   const socketApi = useContext(SocketContext);
 
   const channelId = useSelector(selectors.modalChannelIdSelector);
@@ -27,11 +27,11 @@ const RemoveChannel = () => {
     onSubmit: async () => {
       try {
         await socketApi.removeChannel(channelId);
-        toast(translate('channels.channelRemoved'));
+        toast(t('channels.channelRemoved'));
         handleModalHide();
       } catch (error) {
         console.warn(error);
-        toast.error(translate('errors.dataLoadingError'));
+        toast.error(t('errors.dataLoadingError'));
       }
     },
   });
@@ -39,16 +39,16 @@ const RemoveChannel = () => {
   return (
     <Modal show={isOpened} onHide={handleModalHide} centered animation>
       <Modal.Header closeButton>
-        <Modal.Title>{translate('channels.removeChannelTitle')}</Modal.Title>
+        <Modal.Title>{t('channels.removeChannelTitle')}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{translate('modals.areYouSure')}</Modal.Body>
+      <Modal.Body>{t('modals.areYouSure')}</Modal.Body>
       <Form name="form" onSubmit={formik.handleSubmit}>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleModalHide} disabled={formik.isSubmitting}>
-            {translate('modals.cancelButton')}
+            {t('modals.cancelButton')}
           </Button>
           <Button name="form" type="submit" variant="danger" disabled={formik.isSubmitting}>
-            {translate('modals.removeButton')}
+            {t('modals.removeButton')}
           </Button>
         </Modal.Footer>
       </Form>

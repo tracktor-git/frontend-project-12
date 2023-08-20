@@ -38,3 +38,24 @@
 	border: 5px solid;
 	border-right-color: transparent;
 }
+
+.message {
+	width: fit-content;
+	padding: 6px 9px;
+	border-radius: 4px;
+	background-color: #f0efed;
+	margin-left: inherit;
+	max-width: 60%;
+}
+
+.my-message {
+	background-color: #cedff5;
+	margin-left: auto;
+}
+
+@media (max-width: 767px) {
+	.message {
+		width: unset;
+		max-width: 100%;
+	}
+}

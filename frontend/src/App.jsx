@@ -15,10 +15,10 @@ const App = () => (
   <AuthProvider>
     <BrowserRouter>
       <Routes>
-        <Route path={routes.chatPagePath()} element={<Layout />}>
+        <Route path={routes.chatPagePath} element={<Layout />}>
           <Route index element={<AuthRequire><ChatPage /></AuthRequire>} />
-          <Route path={routes.loginPagePath()} element={<LoginPage />} />
-          <Route path={routes.signupPagePath()} element={<SignupPage />} />
+          <Route path={routes.loginPagePath} element={<LoginPage />} />
+          <Route path={routes.signupPagePath} element={<SignupPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

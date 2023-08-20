@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../redux/slices/modalSlice';
 
 const ModalForm = ({ formik, onSubmit }) => {
-  const translate = useTranslation().t;
+  const { t } = useTranslation();
   const inputRef = useRef();
   const dispatch = useDispatch();
 
@@ -22,33 +22,35 @@ const ModalForm = ({ formik, onSubmit }) => {
     dispatch(closeModal());
   };
 
+  const errorText = t(formik.errors.channelName);
+
   return (
     <Form name="form" onSubmit={onSubmit}>
       <Modal.Body>
         <Form.Group className="input-group">
-          <FloatingLabel label={translate('channels.channelName')} controlId="channelName">
+          <FloatingLabel label={t('channels.channelName')} controlId="channelName">
             <Form.Control
               type="text"
               name="channelName"
               ref={inputRef}
-              placeholder={translate('channels.channelName')}
-              isInvalid={formik.errors.channelName}
+              placeholder={t('channels.channelName')}
+              isInvalid={errorText}
               disabled={formik.isSubmitting}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.channelName}
               autoFocus
             />
-            {formik.errors.channelName && <div className="invalid-tooltip">{formik.errors.channelName}</div>}
+            {errorText && <div className="invalid-tooltip">{errorText}</div>}
           </FloatingLabel>
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleModalHide} disabled={formik.isSubmitting}>
-          {translate('modals.cancelButton')}
+          {t('modals.cancelButton')}
         </Button>
         <Button variant="success" name="form" type="submit" disabled={formik.isSubmitting}>
-          {translate('modals.sendButton')}
+          {t('modals.sendButton')}
         </Button>
       </Modal.Footer>
     </Form>

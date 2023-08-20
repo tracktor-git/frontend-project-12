@@ -6,7 +6,7 @@ const fetchData = createAsyncThunk(
   'data/fetchData',
   async (authHeader, { rejectWithValue }) => {
     try {
-      const response = await axios.get(routes.dataPath(), { headers: authHeader });
+      const response = await axios.get(routes.dataPath, { headers: authHeader });
       return response.data;
     } catch (error) {
       return rejectWithValue(error);

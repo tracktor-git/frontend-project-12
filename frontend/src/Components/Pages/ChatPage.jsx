@@ -11,8 +11,8 @@ import useAuth from '../../Hooks/useAuth';
 import selectors from '../../redux/selectors';
 
 const ChatPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const translate = useTranslation().t;
 
   const status = useSelector(selectors.statusSelector);
   const { logOut, getAuthHeader } = useAuth();
@@ -23,20 +23,20 @@ const ChatPage = () => {
       .unwrap()
       .catch((error) => {
         if (error.response?.statusText === 'Unauthorized') {
-          toast.error(translate('errors.unauthorized'));
+          toast.error(t('errors.unauthorized'));
           logOut();
         } else {
-          toast.error(translate('errors.dataLoadingError'));
+          toast.error(t('errors.dataLoadingError'));
         }
       });
-  }, [dispatch, getAuthHeader, logOut, translate]);
+  }, [dispatch, getAuthHeader, logOut, t]);
 
   if (status === 'loading') {
     return (
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <div className="h-100 d-flex justify-content-center align-items-center">
           <Spinner className="tracktor-spinner" variant="secondary" animation="border">
-            <span className="visually-hidden">{translate('loading')}</span>
+            <span className="visually-hidden">{t('loading')}</span>
           </Spinner>
         </div>
       </Container>

@@ -1,5 +1,4 @@
 import Modal from 'react-bootstrap/Modal';
-import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { useContext } from 'react';
@@ -11,29 +10,21 @@ import SocketContext from '../../../Contexts/SocketContext.js';
 import useFilter from '../../../Hooks/useFilter';
 import selectors from '../../../redux/selectors';
 import ModalForm from './ModalForm';
+import getChannelNameSchema from './ChannelNameSchema';
 
 const AddChannel = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const translate = useTranslation().t;
   const filter = useFilter();
   const socketApi = useContext(SocketContext);
 
   const isOpened = useSelector(selectors.modalIsOpenedSelector);
   const channelNames = useSelector(selectors.channelsNamesSelector);
+  const ChannelNameSchema = getChannelNameSchema(channelNames);
 
   const handleModalHide = () => {
     dispatch(closeModal());
   };
-
-  const ChannelNameSchema = Yup.object().shape({
-    channelName: Yup
-      .string()
-      .trim()
-      .min(3, translate('errors.shouldHaveLength'))
-      .max(20, translate('errors.shouldHaveLength'))
-      .notOneOf(channelNames, translate('errors.shouldBeUniq'))
-      .required(translate('errors.required')),
-  });
 
   const formik = useFormik({
     initialValues: { channelName: '' },
@@ -42,30 +33,25 @@ const AddChannel = () => {
     validateOnBlur: false,
     onSubmit: async (values) => {
       try {
-        const response = await socketApi.addChannel(values.channelName);
+        const filteredName = filter.clean(values.channelName.trim());
+        const response = await socketApi.addChannel(filteredName);
         dispatch(setActiveChannel(response.data.id));
-        toast(translate('channels.channelAdded'));
+        toast(t('channels.channelAdded'));
         handleModalHide();
         formik.resetForm();
       } catch (error) {
-        toast.error(translate('errors.dataLoadingError'));
+        toast.error(t('errors.dataLoadingError'));
         console.warn(error);
       }
     },
   });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    formik.values.channelName = filter.clean(formik.values.channelName);
-    formik.handleSubmit();
-  };
-
   return (
     <Modal show={isOpened} onHide={handleModalHide} centered animation>
       <Modal.Header closeButton>
-        <Modal.Title>{translate('channels.addChannel')}</Modal.Title>
+        <Modal.Title>{t('channels.addChannel')}</Modal.Title>
       </Modal.Header>
-      <ModalForm onSubmit={handleSubmit} formik={formik} />
+      <ModalForm onSubmit={formik.handleSubmit} formik={formik} />
     </Modal>
   );
 };

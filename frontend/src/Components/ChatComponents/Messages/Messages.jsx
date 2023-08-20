@@ -16,10 +16,14 @@ const scrollToBottom = (element) => {
   element.scrollTo(0, element.scrollHeight);
 };
 
+const MessageSchema = Yup.object().shape({
+  body: Yup.string().trim().min(1).required(),
+});
+
 const Messages = () => {
+  const { t } = useTranslation();
   const messagesBoxRef = useRef();
   const messageInputRef = useRef();
-  const translate = useTranslation().t;
   const filter = useFilter();
   const socketApi = useContext(SocketContext);
 
@@ -37,10 +41,6 @@ const Messages = () => {
     scrollToBottom(messagesBoxRef.current);
   }, [messages]);
 
-  const MessageSchema = Yup.object().shape({
-    body: Yup.string().trim().min(1).required(),
-  });
-
   const formik = useFormik({
     initialValues: { body: '' },
     validationSchema: MessageSchema,
@@ -55,7 +55,7 @@ const Messages = () => {
         await socketApi.sendMessage(newMessage);
         formik.resetForm();
       } catch (error) {
-        toast.error(translate('errors.dataLoadingError'));
+        toast.error(t('errors.dataLoadingError'));
         console.warn(error);
       }
     },
@@ -68,7 +68,7 @@ const Messages = () => {
           <p className="m-0">
             <b>{`# ${currentChannelName}`}</b>
           </p>
-          <span className="text-muted">{`${messages.length} ${translate('messages.count', { count: messages.length })}`}</span>
+          <span className="text-muted">{`${messages.length} ${t('messages.count', { count: messages.length })}`}</span>
         </div>
         <div ref={messagesBoxRef} id="messages-box" className="chat-messages overflow-auto px-5">
           {
@@ -88,14 +88,14 @@ const Messages = () => {
                 className="border-0 p-0 ps-2"
                 autoComplete="off"
                 ref={messageInputRef}
-                aria-label={translate('messages.newMessage')}
-                placeholder={translate('messages.enterMessage')}
+                aria-label={t('messages.newMessage')}
+                placeholder={t('messages.enterMessage')}
                 onChange={formik.handleChange}
                 value={formik.values.body}
                 disabled={formik.isSubmitting}
                 autoFocus
               />
-              <span title={translate('messages.sendMessage')}>
+              <span title={t('messages.sendMessage')}>
                 <Button
                   type="submit"
                   variant="group-vertical"
@@ -104,7 +104,7 @@ const Messages = () => {
                   onClick={formik.handleSubmit}
                 >
                   <IoSendSharp size={20} color="rgb(85 133 124)" />
-                  <span className="visually-hidden">{translate('messages.sendMessage')}</span>
+                  <span className="visually-hidden">{t('messages.sendMessage')}</span>
                 </Button>
               </span>
             </Form.Group>

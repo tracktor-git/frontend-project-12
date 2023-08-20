@@ -1,3 +1,4 @@
+import React from 'react';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
@@ -43,17 +44,19 @@ const Init = async () => {
   });
 
   return (
-    <RollbarProvider config={rollbarConfig}>
-      <ErrorBoundary>
-        <I18nextProvider>
-          <ReduxProvider store={store}>
-            <SocketContext.Provider value={socketApi}>
-              <App />
-            </SocketContext.Provider>
-          </ReduxProvider>
-        </I18nextProvider>
-      </ErrorBoundary>
-    </RollbarProvider>
+    <React.StrictMode>
+      <RollbarProvider config={rollbarConfig}>
+        <ErrorBoundary>
+          <I18nextProvider>
+            <ReduxProvider store={store}>
+              <SocketContext.Provider value={socketApi}>
+                <App />
+              </SocketContext.Provider>
+            </ReduxProvider>
+          </I18nextProvider>
+        </ErrorBoundary>
+      </RollbarProvider>
+    </React.StrictMode>
   );
 };
 
