@@ -11,5 +11,7 @@ export default (channelNames) => {
       .required('errors.required'),
   });
 
+  ChannelNameSchema.ValidationError = Yup.ValidationError;
+
   return ChannelNameSchema;
 };

@@ -4,7 +4,6 @@ import { useFormik } from 'formik';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { ValidationError } from 'yup';
 import { closeModal } from '../../../redux/slices/modalSlice';
 import SocketContext from '../../../Contexts/SocketContext.js';
 import useFilter from '../../../Hooks/useFilter';
@@ -43,13 +42,13 @@ const RenameChannel = () => {
       };
 
       try {
-        await ChannelNameSchema.validate(renamedChannel);
+        await ChannelNameSchema.validate({ channelName: values.channelName });
         await socketApi.renameChannel(renamedChannel);
         toast(t('channels.channelRenamed'));
         handleModalHide();
         formik.resetForm();
       } catch (error) {
-        if (error instanceof ValidationError) {
+        if (error instanceof ChannelNameSchema.ValidationError) {
           formik.setFieldError('channelName', error.message);
           return;
         }

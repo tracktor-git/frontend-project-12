@@ -32,14 +32,20 @@ const AddChannel = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
+      formik.values.channelName = filter.clean(values.channelName);
+
       try {
-        const filteredName = filter.clean(values.channelName.trim());
-        const response = await socketApi.addChannel(filteredName);
-        dispatch(setActiveChannel(response.data.id));
+        await ChannelNameSchema.validate({ channelName: values.channelName });
+        const { data } = await socketApi.addChannel(values.channelName);
+        dispatch(setActiveChannel(data.id));
         toast(t('channels.channelAdded'));
         handleModalHide();
         formik.resetForm();
       } catch (error) {
+        if (error instanceof ChannelNameSchema.ValidationError) {
+          formik.setFieldError('channelName', error.message);
+          return;
+        }
         toast.error(t('errors.dataLoadingError'));
         console.warn(error);
       }
