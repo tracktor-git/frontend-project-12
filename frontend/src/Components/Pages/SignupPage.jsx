@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { useFormik } from 'formik';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
@@ -34,7 +34,8 @@ const SignupSchema = Yup.object().shape({
 
 const SignupPage = () => {
   const { t } = useTranslation();
-  const { logIn, loggedIn } = useAuth();
+  const { logIn } = useAuth();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: { username: '', password: '', passwordConfirm: '' },
@@ -45,6 +46,7 @@ const SignupPage = () => {
         const { data } = await axios.post(routes.signupPath, { username, password });
         localStorage.setItem('user', JSON.stringify({ username: data.username, token: data.token }));
         logIn();
+        navigate(routes.chatPagePath);
       } catch (error) {
         switch (error.code) {
           case 'ERR_BAD_REQUEST':
@@ -60,10 +62,6 @@ const SignupPage = () => {
       }
     },
   });
-
-  if (loggedIn) {
-    return <Navigate to={routes.chatPagePath} />;
-  }
 
   return (
     <Container className="h-100" fluid>

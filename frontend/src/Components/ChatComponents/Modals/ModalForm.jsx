@@ -1,4 +1,3 @@
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
@@ -6,6 +5,7 @@ import { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../redux/slices/modalSlice';
+import ModalFooter from './ModalFooter';
 
 const ModalForm = ({ formik, onSubmit }) => {
   const { t } = useTranslation();
@@ -45,14 +45,7 @@ const ModalForm = ({ formik, onSubmit }) => {
           </FloatingLabel>
         </Form.Group>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleModalHide} disabled={formik.isSubmitting}>
-          {t('modals.cancelButton')}
-        </Button>
-        <Button variant="success" name="form" type="submit" disabled={formik.isSubmitting}>
-          {t('modals.sendButton')}
-        </Button>
-      </Modal.Footer>
+      <ModalFooter handleModalHide={handleModalHide} isDisabled={formik.isSubmitting} submitButtonVariant="success" />
     </Form>
   );
 };

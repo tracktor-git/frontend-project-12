@@ -1,4 +1,3 @@
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,6 +8,7 @@ import { useContext } from 'react';
 import { closeModal } from '../../../redux/slices/modalSlice';
 import SocketContext from '../../../Contexts/SocketContext.js';
 import selectors from '../../../redux/selectors';
+import ModalFooter from './ModalFooter';
 
 const RemoveChannel = () => {
   const { t } = useTranslation();
@@ -43,14 +43,7 @@ const RemoveChannel = () => {
       </Modal.Header>
       <Modal.Body>{t('modals.areYouSure')}</Modal.Body>
       <Form name="form" onSubmit={formik.handleSubmit}>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleModalHide} disabled={formik.isSubmitting}>
-            {t('modals.cancelButton')}
-          </Button>
-          <Button name="form" type="submit" variant="danger" disabled={formik.isSubmitting}>
-            {t('modals.removeButton')}
-          </Button>
-        </Modal.Footer>
+        <ModalFooter handleModalHide={handleModalHide} isDisabled={formik.isSubmitting} submitButtonVariant="danger" />
       </Form>
     </Modal>
   );
