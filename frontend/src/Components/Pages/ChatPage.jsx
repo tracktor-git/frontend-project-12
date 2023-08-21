@@ -25,9 +25,9 @@ const ChatPage = () => {
     dispatch(fetchData(authHeader))
       .unwrap()
       .catch((error) => {
-        if (error.response?.statusText === 'Unauthorized') {
-          toast.error(t('errors.unauthorized'));
+        if (error.name === 'AxiosError' && error.response.status === 401) {
           logOut();
+          toast.error(t('errors.unauthorized'));
           return;
         }
         toast.error(t('errors.dataLoadingError'));
