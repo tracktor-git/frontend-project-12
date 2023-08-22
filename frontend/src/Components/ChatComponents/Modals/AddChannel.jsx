@@ -18,13 +18,8 @@ const AddChannel = () => {
   const filter = useFilter();
   const socketApi = useContext(SocketContext);
 
-  const isOpened = useSelector(selectors.modalIsOpenedSelector);
   const channelNames = useSelector(selectors.channelsNamesSelector);
   const ChannelNameSchema = getChannelNameSchema(channelNames);
-
-  const handleModalHide = () => {
-    dispatch(closeModal());
-  };
 
   const formik = useFormik({
     initialValues: { channelName: '' },
@@ -32,14 +27,13 @@ const AddChannel = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
-      formik.values.channelName = filter.clean(values.channelName);
-
       try {
+        formik.values.channelName = filter.clean(values.channelName);
         await ChannelNameSchema.validate({ channelName: values.channelName });
         const { data } = await socketApi.addChannel(values.channelName);
         dispatch(setActiveChannel(data.id));
         toast(t('channels.channelAdded'));
-        handleModalHide();
+        dispatch(closeModal());
         formik.resetForm();
       } catch (error) {
         if (error instanceof ChannelNameSchema.ValidationError) {
@@ -53,12 +47,12 @@ const AddChannel = () => {
   });
 
   return (
-    <Modal show={isOpened} onHide={handleModalHide} centered animation>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('channels.addChannel')}</Modal.Title>
       </Modal.Header>
       <ModalForm onSubmit={formik.handleSubmit} formik={formik} />
-    </Modal>
+    </>
   );
 };
 

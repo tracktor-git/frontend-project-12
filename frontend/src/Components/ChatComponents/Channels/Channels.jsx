@@ -22,7 +22,7 @@ const Channels = () => {
   useEffect(() => {
     setTimeout(() => {
       if (currentChannelId) scrollToCurrentChannel(channelRef.current);
-    }, 0);
+    }, 180);
   }, [currentChannelId]);
 
   const handleOpenModal = () => {

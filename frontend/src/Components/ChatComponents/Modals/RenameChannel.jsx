@@ -17,16 +17,11 @@ const RenameChannel = () => {
   const filter = useFilter();
   const socketApi = useContext(SocketContext);
 
-  const isOpened = useSelector(selectors.modalIsOpenedSelector);
   const channelId = useSelector(selectors.modalChannelIdSelector);
   const channelName = useSelector(selectors.channelNameSelector);
   const channelNames = useSelector(selectors.channelsNamesSelector);
 
   const ChannelNameSchema = getChannelNameSchema(channelNames);
-
-  const handleModalHide = () => {
-    dispatch(closeModal());
-  };
 
   const formik = useFormik({
     initialValues: { channelName },
@@ -34,19 +29,13 @@ const RenameChannel = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
-      formik.values.channelName = filter.clean(values.channelName);
-
-      const renamedChannel = {
-        id: channelId,
-        name: values.channelName,
-      };
-
       try {
+        formik.values.channelName = filter.clean(values.channelName);
         await ChannelNameSchema.validate({ channelName: values.channelName });
-        await socketApi.renameChannel(renamedChannel);
+        await socketApi.renameChannel({ id: channelId, name: values.channelName });
+        dispatch(closeModal());
         toast(t('channels.channelRenamed'));
-        handleModalHide();
-        formik.resetForm();
+        formik.resetForm({ values: { channelName: '' } });
       } catch (error) {
         if (error instanceof ChannelNameSchema.ValidationError) {
           formik.setFieldError('channelName', error.message);
@@ -59,12 +48,12 @@ const RenameChannel = () => {
   });
 
   return (
-    <Modal show={isOpened} onHide={handleModalHide} centered animation>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('channels.renameChannelTitle')}</Modal.Title>
       </Modal.Header>
       <ModalForm onSubmit={formik.handleSubmit} formik={formik} />
-    </Modal>
+    </>
   );
 };
 

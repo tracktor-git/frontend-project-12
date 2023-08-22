@@ -1,4 +1,6 @@
-import { useSelector } from 'react-redux';
+import Modal from 'react-bootstrap/Modal';
+import { useSelector, useDispatch } from 'react-redux';
+import { closeModal } from '../../../redux/slices/modalSlice';
 import AddChannel from './AddChannel';
 import RenameChannel from './RenameChannel';
 import RemoveChannel from './RemoveChannel';
@@ -13,10 +15,18 @@ const modalTypes = {
 const setModalType = (type) => modalTypes[type];
 
 const ChatModal = () => {
+  const dispatch = useDispatch();
+
+  const isOpened = useSelector(selectors.modalIsOpenedSelector);
   const type = useSelector(selectors.modalTypeSelector);
+
   const CurrentModal = setModalType(type);
 
-  return type && <CurrentModal />;
+  return (
+    <Modal show={isOpened} onHide={() => dispatch(closeModal())} restoreFocus={type === 'addChannel'} centered animation>
+      {type && <CurrentModal />}
+    </Modal>
+  );
 };
 
 export default ChatModal;

@@ -16,11 +16,6 @@ const RemoveChannel = () => {
   const socketApi = useContext(SocketContext);
 
   const channelId = useSelector(selectors.modalChannelIdSelector);
-  const isOpened = useSelector(selectors.modalIsOpenedSelector);
-
-  const handleModalHide = () => {
-    dispatch(closeModal());
-  };
 
   const formik = useFormik({
     initialValues: {},
@@ -28,7 +23,7 @@ const RemoveChannel = () => {
       try {
         await socketApi.removeChannel(channelId);
         toast(t('channels.channelRemoved'));
-        handleModalHide();
+        dispatch(closeModal());
       } catch (error) {
         console.warn(error);
         toast.error(t('errors.dataLoadingError'));
@@ -37,15 +32,15 @@ const RemoveChannel = () => {
   });
 
   return (
-    <Modal show={isOpened} onHide={handleModalHide} centered animation>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('channels.removeChannelTitle')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>{t('modals.areYouSure')}</Modal.Body>
       <Form name="form" onSubmit={formik.handleSubmit}>
-        <ModalFooter handleModalHide={handleModalHide} isDisabled={formik.isSubmitting} submitButtonVariant="danger" />
+        <ModalFooter handleModalHide={() => dispatch(closeModal())} isDisabled={formik.isSubmitting} submitButtonVariant="danger" />
       </Form>
-    </Modal>
+    </>
   );
 };
 
