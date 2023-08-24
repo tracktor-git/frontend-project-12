@@ -44,8 +44,7 @@ const SignupPage = () => {
       const { username, password } = values;
       try {
         const { data } = await axios.post(routes.signupPath, { username, password });
-        localStorage.setItem('user', JSON.stringify({ username: data.username, token: data.token }));
-        logIn();
+        logIn(data);
         navigate(routes.chatPagePath);
       } catch (error) {
         switch (error.code) {
@@ -69,9 +68,9 @@ const SignupPage = () => {
         <Col className="col-12 col-md-8 col-xxl-6">
           <Card className="shadow-sm">
             <Card.Body className="p-5 row">
-              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+              <Col className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <img style={{ pointerEvents: 'none' }} src={signupImage} className="roundedCircle" alt="Login" width="250px" />
-              </div>
+              </Col>
               <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
                 <h1 className="text-center mb-4">{t('register')}</h1>
                 <fieldset disabled={formik.isSubmitting}>

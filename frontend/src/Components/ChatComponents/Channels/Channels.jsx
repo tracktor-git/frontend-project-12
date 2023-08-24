@@ -2,28 +2,30 @@ import { Button, Nav } from 'react-bootstrap';
 import { FaRegSquarePlus } from 'react-icons/fa6';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useRef, useEffect } from 'react';
+import { useEffect } from 'react';
+import { animateScroll } from 'react-scroll';
 import { openModal } from '../../../redux/slices/modalSlice.js';
 import Channel from './Channel.jsx';
 import ChatModal from '../Modals/ChatModal';
 import selectors from '../../../redux/selectors.js';
 
-const scrollToCurrentChannel = (element) => {
-  element?.scrollIntoView({ behavior: 'smooth' });
-};
-
 const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const channels = useSelector(selectors.channelsSelector);
+  const defaultChannelId = 1;
   const currentChannelId = useSelector(selectors.currentChannelIdSelector);
-  const channelRef = useRef();
+  const lastChannelId = channels.at(-1)?.id;
 
   useEffect(() => {
-    setTimeout(() => {
-      if (currentChannelId) scrollToCurrentChannel(channelRef.current);
-    }, 180);
-  }, [currentChannelId]);
+    const animateOptions = { containerId: 'channels-list', delay: 0, offset: 50 };
+    if (currentChannelId === defaultChannelId) {
+      animateScroll.scrollToTop(animateOptions);
+    }
+    if (currentChannelId === lastChannelId) {
+      animateScroll.scrollToBottom(animateOptions);
+    }
+  }, [currentChannelId, lastChannelId]);
 
   const handleOpenModal = () => {
     dispatch(openModal({ type: 'addChannel' }));
@@ -45,14 +47,13 @@ const Channels = () => {
             <span className="visually-hidden">+</span>
           </Button>
         </div>
-        <Nav className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
+        <Nav id="channels-list" className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
           {
             channels.map((data) => (
               <Channel
                 key={data.id}
                 data={data}
                 isCurrent={data.id === currentChannelId}
-                setRef={data.id === currentChannelId ? channelRef : null}
               />
             ))
           }

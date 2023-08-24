@@ -23,7 +23,7 @@ const ChatModal = () => {
   const CurrentModal = setModalType(type);
 
   return (
-    <Modal show={isOpened} onHide={() => dispatch(closeModal())} restoreFocus={type === 'addChannel'} centered animation>
+    <Modal show={isOpened} onHide={() => dispatch(closeModal())} restoreFocus={type === 'addChannel'} centered>
       {type && <CurrentModal />}
     </Modal>
   );

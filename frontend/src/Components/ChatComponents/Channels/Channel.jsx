@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { setActiveChannel } from '../../../redux/slices/channelsSlice';
 import { openModal } from '../../../redux/slices/modalSlice';
 
-const Channel = ({ data, isCurrent, setRef }) => {
+const Channel = ({ data, isCurrent }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -25,7 +25,7 @@ const Channel = ({ data, isCurrent, setRef }) => {
   };
 
   return (
-    <Nav.Item className="channel w-100" ref={setRef}>
+    <Nav.Item className="channel w-100">
       <Dropdown className="d-flex btn-group">
         <Button variant={buttonVariant} className="w-100 rounded-0 text-start btn text-truncate" onClick={handleChannelClick}>
           <span className="me-1">{`# ${data.name}`}</span>

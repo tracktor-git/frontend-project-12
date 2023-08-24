@@ -1,10 +1,12 @@
 import filter from 'leo-profanity';
 
-/* Adding double-lang support for filtering bad words */
-filter.clearList();
-filter.add(filter.getDictionary('en'));
-filter.add(filter.getDictionary('ru'));
+const useFilter = () => {
+  /* Adding double-lang support for filtering bad words */
+  filter.clearList();
+  filter.add(filter.getDictionary('en'));
+  filter.add(filter.getDictionary('ru'));
 
-const useFilter = () => filter;
+  return filter;
+};
 
 export default useFilter;

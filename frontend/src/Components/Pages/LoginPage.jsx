@@ -27,17 +27,14 @@ const LoginForm = () => {
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
-        const response = await axios.post(routes.loginPath, values);
-        localStorage.setItem('user', JSON.stringify(response.data));
-        logIn();
+        const { data } = await axios.post(routes.loginPath, values);
+        logIn(data);
         navigate(routes.chatPagePath);
         formik.resetForm();
       } catch (error) {
         if (error.code === 'ERR_NETWORK') {
           toast.error(t('errors.networkError'));
-          return;
-        }
-        if (error.response.status === 401) {
+        } else if (error.response.status === 401) {
           setAuthFailed(true);
           formik.setFieldError('password', t('errors.wrongAuthData'));
           return;
@@ -85,9 +82,9 @@ const LoginPage = () => {
         <Col className="col-12 col-md-8 col-xxl-6">
           <Card className="shadow-sm">
             <Card.Body className="p-5 row">
-              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+              <Col className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <img style={{ pointerEvents: 'none' }} src={loginImage} className="roundedCircle" alt="Login" width="250px" />
-              </div>
+              </Col>
               <LoginForm />
             </Card.Body>
             <Card.Footer className="p-4">
